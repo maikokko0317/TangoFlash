@@ -102,4 +102,5 @@ public class MainActivity extends AppCompatActivity {
         // 英訳を表示
         englishLabel.setVisibility(View.VISIBLE);
     }
+
 }
