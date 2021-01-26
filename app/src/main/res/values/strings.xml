@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- クイズ画面 -->
+    <string name="app_name">TangoFlash</string>
+    <string name="count_label">Q%d</string>
+    <string name="japanese_label">日本語日本語日本語</string>
+    <string name="english_label">EnglishEnlighEnglish</string>
+    <string name="turn_btn">めくる</string>
+    <string name="next_btn">次へ</string>
+
+    <!-- 結果画面 -->
+    <string name="result_title">結果</string>
+    <string name="result_score">%d /5</string>
+    <string name="return_btn">もう一回</string>
+
+
+</resources>
