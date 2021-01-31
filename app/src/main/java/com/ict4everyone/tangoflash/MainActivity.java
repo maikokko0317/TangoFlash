@@ -103,4 +103,7 @@ public class MainActivity extends AppCompatActivity {
         englishLabel.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void onBackPressed() {
+    }
 }
