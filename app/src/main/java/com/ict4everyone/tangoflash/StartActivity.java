@@ -17,4 +17,8 @@ public class StartActivity extends AppCompatActivity {
     public void startQuiz(View view) {
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
+
+    public void displayList(View view) {
+        startActivity(new Intent(getApplicationContext(), ListActivity.class));
+    }
 }

@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:text="@string/list_btn"
         android:layout_marginTop="40dp"
-        android:onClick="displayQuiz"/>
+        android:onClick="displayList"/>
 
 </LinearLayout>
