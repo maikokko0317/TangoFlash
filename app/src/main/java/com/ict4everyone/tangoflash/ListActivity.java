@@ -1,11 +1,17 @@
 package com.ict4everyone.tangoflash;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -19,6 +25,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ListView lvQuiz;
     private DatabaseHelper helper;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,9 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         // データベースヘルパーオブジェクトを作成
-        helper = new DatabaseHelper(getApplicationContext());
+        if(helper == null) {
+            helper = new DatabaseHelper(getApplicationContext());
+        }
 
         readData();
     }
@@ -43,7 +52,7 @@ public class ListActivity extends AppCompatActivity {
         Map<String, String> quiz;
 
         // リストデータの登録
-        quiz = new HashMap<>();
+ /*     quiz = new HashMap<>();
         quiz.put("quiz", "おはよう");
         quiz.put("answer", "Good Morning!!");
         quizList.add(quiz);
@@ -55,7 +64,7 @@ public class ListActivity extends AppCompatActivity {
         quiz.put("quiz", "こんばんは");
         quiz.put("answer", "Good Evening!!");
         quizList.add(quiz);
- /*     quiz = new HashMap<>();
+        quiz = new HashMap<>();
         quiz.put("quiz", "ありがとう");
         quiz.put("answer", "Thank you!!");
         quizList.add(quiz);
@@ -108,7 +117,9 @@ public class ListActivity extends AppCompatActivity {
 
 
         // データベースヘルパーオブジェクトからデータベース接続オブジェクトを取得
-        SQLiteDatabase db = helper.getWritableDatabase();
+        if(db == null) {
+            db = helper.getWritableDatabase();
+        }
         Cursor cursor = db.query(
                 "m_quiz",
                 new String[] {"rowid","quiz", "answer"},
@@ -122,6 +133,7 @@ public class ListActivity extends AppCompatActivity {
         for (int i=0; i<cursor.getCount(); i++) {
             quiz = new HashMap<>();
             Log.d("debug","まいこcursor.getString(1)"+cursor.getString(1));
+            quiz.put("rowid", cursor.getString(0));
             quiz.put("quiz", cursor.getString(1));
             quiz.put("answer", cursor.getString(2));
             quizList.add(quiz);
@@ -140,9 +152,76 @@ public class ListActivity extends AppCompatActivity {
         SimpleAdapter adapter = new SimpleAdapter(ListActivity.this, quizList, android.R.layout.simple_list_item_2, from, to);
         // アダプタの登録
         lvQuiz.setAdapter(adapter);
+
+        // リスナ設定（タップした時）
+        lvQuiz.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // タップされた問題を取得
+                Map<String, String> item = (Map<String, String>) parent.getItemAtPosition(position);
+                String rowid = item.get("rowid");
+                String quiz = item.get("quiz");
+                String answer = item.get("answer");
+                // インテントオブジェクトを生成
+                Intent intent = new Intent(ListActivity.this, InsUpdateActivity.class);
+                // 次画面に贈るデータを格納
+                intent.putExtra("rowid", rowid);
+                intent.putExtra("quiz", quiz);
+                intent.putExtra("answer", answer);
+
+                startActivity(intent);
+            }
+        });
+
+        // リスナ設定（長押しした時）
+        lvQuiz.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                // タップされた問題を取得
+                Map<String, String> item = (Map<String, String>) parent.getItemAtPosition(position);
+                String rowid = item.get("rowid");
+                String quiz = item.get("quiz");
+
+                // ダイアログを表示
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+
+                builder.setTitle("削除");
+                builder.setMessage(rowid + ":" + quiz + "を削除しますか");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(helper == null){
+                            helper = new DatabaseHelper(getApplicationContext());
+                        }
+                        if(db == null){
+                            db = helper.getReadableDatabase();
+                        }
+                        db.delete("m_quiz", "_id = " + rowid,null);
+                        // ★削除しました、のtoast出したい
+                        onStart();
+                    }
+                });
+                builder.setNegativeButton("CANCEL", null);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
+            }
+        });
+    }
+
+    public void moveInsert(View v){
+        Intent intent = new Intent(getApplication(), InsUpdateActivity.class);
+        startActivity(intent);
     }
 
     @Override
-    public void onBackPressed() {
+    protected void onStart() {
+        super.onStart();
+        readData();
     }
+
+    //    @Override
+//    public void onBackPressed() {
+//    }
 }

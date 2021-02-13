@@ -18,12 +18,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView englishLabel;
     private Button turnBtn;
     private Button nextBtn;
+    private DatabaseHelper helper;
 
     private int quizCount = 1;
     static final private int QUIZ_COUNT = 5;
 
     ArrayList<ArrayList<String>> quizArray = new ArrayList<>();
-
     String[][] quizData = {
             // {"日本語", "英訳"}
             {"おはよう", "Good Morning!!"},
@@ -43,11 +43,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // DB作成
+        helper = new DatabaseHelper(getApplicationContext());
+        setTangFlash();
+
         countLabel = findViewById(R.id.countLabel);
         japaneseLabel = findViewById(R.id.japaneseLabel);
         englishLabel = findViewById(R.id.englishLabel);
         turnBtn = findViewById(R.id.turnBtn);
         nextBtn = findViewById(R.id.nextBtn);
+
+
 
         // quizDataから単語カード出題用のquizArrayを作成する
         for (int i = 0; i< quizData.length; i++) {
@@ -103,7 +109,15 @@ public class MainActivity extends AppCompatActivity {
         englishLabel.setVisibility(View.VISIBLE);
     }
 
-    @Override
+    /**
+     * DBから全件取得しArrayListにセット
+     */
+    public void setTangFlash(){
+
+    }
+
+
+        @Override
     public void onBackPressed() {
     }
 }

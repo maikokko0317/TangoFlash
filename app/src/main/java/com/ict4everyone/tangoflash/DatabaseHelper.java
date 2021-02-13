@@ -45,9 +45,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("debug", "onCreate(SQLiteDatabase db)");
 
         //初期データ投入
-        saveData(db,"風くんすきー", "I love KAZE<3");
-        saveData(db,"風くんこっちきてー", "Come here, KAZE<3");
-        saveData(db,"風くん風くん", "KAZE, KAZE<3<3");
+        saveData(db, null, "風くんすきー", "I love KAZE<3");
+        saveData(db, null,"風くんこっちきてー", "Come here, KAZE<3");
+        saveData(db, null,"風くん風くん", "KAZE, KAZE<3<3");
     }
 
     @Override
@@ -61,12 +61,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     // insertQuestion.javaから呼ばれるためにstatic追加
-    public static void saveData(SQLiteDatabase db, String quiz, String answer) {
+    public static void saveData(SQLiteDatabase db, String rowid, String quiz, String answer) {
         ContentValues values = new ContentValues();
         values.put("quiz", quiz);
         values.put("answer", answer);
 
-        db.insert("m_quiz", null, values);
+        if(rowid == null || rowid.isEmpty()){
+            //rowidない場合、Insert
+            db.insert("m_quiz", null, values);
+        } else {
+            db.update("m_quiz", values, "_id = " + rowid, null);
+        }
+
     }
 }
 

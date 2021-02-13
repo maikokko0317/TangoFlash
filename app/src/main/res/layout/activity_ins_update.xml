@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InsUpdateActivity"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/rowidTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"/>
+
+    <TextView
+        android:id="@+id/quizLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quiz_label"
+        android:textSize="24sp"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/question_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="まいこだよ" />
+
+    <TextView
+        android:id="@+id/answerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/answer_label"
+        android:textSize="24sp"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:id="@+id/answer_input_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:hint="It's Maiko!!" />
+
+    <Button
+        android:id="@+id/insUpd_Btn"
+        android:layout_width="100dp"
+        android:layout_height="60dp"
+        android:text="@string/ins_upd_button"
+        android:layout_marginTop="30dp"
+        android:onClick="insUpdQuiz" />
+
+</LinearLayout>

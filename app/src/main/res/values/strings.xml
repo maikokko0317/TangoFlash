@@ -17,5 +17,9 @@
     <string name="result_score">%d /5</string>
     <string name="return_btn">もう一回</string>
 
+    <!-- 登録・編集画面 -->
+    <string name="quiz_label">日本語</string>
+    <string name="answer_label">英語</string>
+    <string name="ins_upd_button">登録</string>
 
 </resources>
